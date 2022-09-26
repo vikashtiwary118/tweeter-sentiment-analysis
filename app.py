@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect
+import sentiment_analysis
 
 app = Flask(__name__)
 
@@ -14,8 +15,9 @@ def hello_world():
 def searched_tweet():
 	if request.method == 'POST':
 	    text = request.form['tweet']
-	    data_list=fetchDataFromAPI(text)
-	    return render_template('index.html', rows=data_list)
+	    if text:
+		    data_list=sentiment_analysis.sentimental_analysis(text)
+		    return render_template('index.html', rows=data_list)
 	return redirect('/')
 
 
