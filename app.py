@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import sentiment_analysis
-
+import json
 app = Flask(__name__)
 
 def fetchDataFromAPI(text):
@@ -14,10 +14,12 @@ def hello_world():
 @app.route('/', methods=['POST'])
 def searched_tweet():
 	if request.method == 'POST':
-	    text = request.form['tweet']
+	    text = request.form['searched']
 	    if text:
 		    data_list=sentiment_analysis.sentimental_analysis(text)
-		    return render_template('index.html', rows=data_list)
+		    number_of_page=len(data_list)//10
+		    list_number_of_page=[i for i in range(1,number_of_page)]
+		    return render_template('index1.html', rows=json.dumps(data_list),number_of_page=list_number_of_page)
 	return redirect('/')
 
 
