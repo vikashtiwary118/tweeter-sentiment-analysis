@@ -10,7 +10,19 @@
 <script type="text/javascript">
     var count=0;
     var dict = {};
-    $(document).ready(function(){   
+    //var $rows = $('#myTable tr');
+    $(document).ready(function(){
+        // $('#search-table').keyup(function() {
+        //     // alert('test')
+        //     var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
+        //         reg = RegExp(val, 'i'),
+        //         text;
+
+        //     $rows.show().filter(function() {
+        //         text = $(this).text().replace(/\s+/g, ' ');
+        //         return !reg.test(text);
+        //     }).hide();
+        // });   
         $(".tweet").on("keyup change", function(e) {
                 var searched=JSON.stringify(e.currentTarget.value);
                  $.ajax({
@@ -66,6 +78,26 @@ function pageClick(ele){
          jQuery('#myTable').append(dict[ele.id]);
          console.log(dict);
      }
+
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+
 </script>
 <div>
 	<p><h1 align="center">Twitter Sentiment Analysis</h1></p>
@@ -83,6 +115,8 @@ function pageClick(ele){
 <div class="not-found-class" align="center" hidden><h2> Data not found </h2></div>
 <br/>
 <div class="paginated-table" hidden>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search">
+<br/>
 <table class="paginated" border=5 style="min-width:400px">
         <thead bgcolor="yellow" style="font-size:2vw" align="center">
             <tr>
