@@ -1,40 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Tweeter sentiment analysis</title>
 </head>
 <body>
+<script type="text/javascript">
+    var count=0;
+    var dict = {};
+    $(document).ready(function(){   
+        $(".tweet").on("keyup change", function(e) {
+                var searched=JSON.stringify(e.currentTarget.value);
+                 $.ajax({
+                    url: "/tweeter",
+                    method: "POST",
+                    data: JSON.stringify({'searched':searched}),
+                    dataType: 'json',
+                    contentType: "application/json",
+                     success: function(result,status,jqXHR ){
+                          $('.paginated-table').show();
+                          $('.not-found-class').hide();
+                          var tr;
+                          $('#myTable').empty();
+                          $('#page-id').empty();
+                            var page_count=1;
+                            var arr=[];
+                            for (var i = 0; i < result.length; i++) {
+                                tr = $('<tr/>');
+                                tr.append("<td>" + result[i].tweets + "</td>");
+                                tr.append("<td>" + result[i].Analysis + "</td>");
+
+                                arr.push(tr);
+                                if(i!=0 && i%9==0){
+                                    dict[page_count] = arr;
+                                    page_count++;
+                                    arr=[];
+                                }
+                            }
+                            if(result.length==0){
+                                $('.paginated-table').hide();
+                                $('.not-found-class').show();
+                            }
+
+                            var page_size=10;
+                            var number_of_page=Math.ceil(result.length/page_size);
+                            for(i=1; i<=number_of_page; i++) {
+                                $('#page-id').append('<a href="#" name="page-name" id="'+i+'" onclick="pageClick(this);" rel="'+i+'">'+i+'</a> ');
+
+                            }
+
+                            $('#myTable').append(dict[1]);
+                     },
+                     error(jqXHR, textStatus, errorThrown){
+                         alert('error');
+                         alert(textStatus);
+                         alert(errorThrown);
+                     }   
+                });
+    });
+});
+function pageClick(ele){
+         document.getElementById('myTable').innerHTML='';
+         jQuery('#myTable').append(dict[ele.id]);
+         console.log(dict);
+     }
+</script>
 <div>
 	<p><h1 align="center">Twitter Sentiment Analysis</h1></p>
-	<form class="form-inline" method="post" action="/">
+	<form class="form-inline" id="form" method="post" action="/">
 		<div align="center">
 			<div class="form-group">
-				<label class="sr-only" for="tweetInput" style="font-size:2vw">Search:</label>
-				<input type="search" name="searched" id="tweetSearch" placeholder="Search">
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<label class="sr-only" for="tweetInput" style="font-size:3vw">Search:</label>
+				<input type="search" name="searched" id="tweetSearch" class="tweet" placeholder="Search" style="font-size:2vw">
+                <div id="input-data"></div>
 			</div>
 		</div>
 	</form>
-	<br><br><br>
-	{% if rows %}
-		<div align="center">
-			
-			<table border=5>
-				<thead bgcolor="yellow" style="font-size:2vw" align="center">
-					<td>Tweets</td>
-					<td>Analysis</td>
-				</thead>
-				{% for row in rows%}
-				<tr bgcolor="LightGrey" style="font-size:1.5vw">
-					<td>{{ row['tweets']}}</td>
-					<td>{{ row['Analysis']}}</td>
-				</tr>
-				{% endfor %}
-			</table>
-		</div>
-	{% endif %}
 </div>
+<br/>
+<div class="not-found-class" align="center" hidden><h2> Data not found </h2></div>
+<br/>
+<div class="paginated-table" hidden>
+<table class="paginated" border=5 style="min-width:400px">
+        <thead bgcolor="yellow" style="font-size:2vw" align="center">
+            <tr>
+                <th class="col">Tweets</th>
+                <th class="col">Analysis</th>  
+           </tr>
+      </thead>
+      <tbody id="myTable" class="myTable1">
+     </tbody>
+    </table>
+    <div align="center" style="padding-top: 8px" class="pagination-class">
+        <div id="page-id">
+    </div>
+    </div>
 </body>
 </html>

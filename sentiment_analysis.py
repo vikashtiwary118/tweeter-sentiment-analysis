@@ -91,7 +91,7 @@ def computePositivity(polarityvalue):
     elif polarityvalue < 0:
         return "Negative"
     else:
-        return "Nutral"
+        return "Neutral"
     
 
 
