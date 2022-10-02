@@ -1,8 +1,8 @@
-"# tweeter-sentiment-analysis" 
-Flask project template contains a working example of a Flask project with features:
-Simple setup and make local virtualenv isolated environment and doesn't trash your system python.
+"# tweeter-sentiment-analysis"__ 
+Flask project template contains a working example of a Flask project with features:__
+Simple setup and make local virtualenv isolated environment and doesn't trash your system python.__
 
-Templates use Bootstrap but don't force you to use this UI framework.
+Templates use Bootstrap but don't force you to use this UI framework.__
 
 You only need to provide consumer_key, consumer_key_s, access_token, access_token_s of tweeter developer API.
 Profile the key into config.py.
