@@ -13,7 +13,7 @@ Profile the key into config.py.<br /><br /><br />
 The way is to manually clone this repository and change it later by own. Project is ready to run (with some requirements). You need to clone and run:<br />
 $ mkdir Project<br />
 $ cd Project<br />
-$ https://github.com/vikashtiwary118/tweeter-sentiment-analysis.git .<br /><br />
+$ git clone https://github.com/vikashtiwary118/tweeter-sentiment-analysis.git .<br /><br />
 
 **Comand to setup project in windows**<br />
 
